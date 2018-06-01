@@ -205,6 +205,28 @@ RUN apk add --update \
 
 ## END add python
 
+## START add JQ and danger
+
+RUN apk update \
+ && apk add jq \
+ && rm -rf /var/cache/apk/*
+
+RUN \
+  # update packages
+  apk update && apk upgrade && \
+
+  # install ruby
+  apk --no-cache add ruby ruby-dev ruby-bundler ruby-json ruby-irb ruby-rake ruby-bigdecimal ruby-rdoc && \
+
+  # clear after installation
+  rm -rf /var/cache/apk/*
+
+RUN gem install danger && \
+    gem install danger-commit_lint && \
+    gem install danger-prose
+
+## END add JQ and danger
+
 ## START of maven from alpine
 
 RUN apk add --no-cache curl tar bash procps

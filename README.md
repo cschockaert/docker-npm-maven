@@ -14,7 +14,7 @@ This project goal is to create a docker image with all build tool included:
 * openjdk 1.8.0_151  https://github.com/docker-library/openjdk/blob/master/8-jdk/alpine/Dockerfile
 * maven - 3.5.3 (https://hub.docker.com/r/library/maven/) maven:alpine docker image
 * python 2.7.14
-
+* gem and danger
 
 ## How to use
 
