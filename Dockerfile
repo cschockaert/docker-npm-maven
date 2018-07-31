@@ -1,9 +1,10 @@
 # using latest node alpine image https://hub.docker.com/_/node/
 
-FROM alpine:3.7
+
+FROM alpine:3.8
 LABEL maintainer="clement.schockaert@outlook.com"
 
-ENV NODE_VERSION 8.11.2
+ENV NODE_VERSION 10.7.0
 
 RUN addgroup -g 1000 node \
     && adduser -u 1000 -G node -s /bin/sh -D node \
@@ -29,6 +30,7 @@ RUN addgroup -g 1000 node \
     B9AE9905FFD7803F25714661B63B535A4C206CA9 \
     56730D5401028683275BD23C23EFEFE93C4CFFFE \
     77984A986EBC2AA786BC0F66B01FBB92821C587A \
+    8FCCA13FEF1D0C2E91008E09770F7A9A5AE15600 \
   ; do \
     gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" || \
     gpg --keyserver hkp://ipv4.pool.sks-keyservers.net --recv-keys "$key" || \
@@ -48,7 +50,7 @@ RUN addgroup -g 1000 node \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
-ENV YARN_VERSION 1.6.0
+ENV YARN_VERSION 1.7.0
 
 RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && for key in \
@@ -68,6 +70,7 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
   && apk del .build-deps-yarn
 
+#CMD [ "node" ]
 ## install docker
 
 #CMD [ "node" ]
@@ -83,7 +86,7 @@ RUN apk add --no-cache \
 RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
 
 ENV DOCKER_CHANNEL stable
-ENV DOCKER_VERSION 18.03.1-ce
+ENV DOCKER_VERSION 18.06.0-ce
 # TODO ENV DOCKER_SHA256
 # https://github.com/docker/docker-ce/blob/5b073ee2cf564edee5adca05eee574142f7627bb/components/packaging/static/hash_files !!
 # (no SHA file artifacts on download.docker.com yet as of 2017-06-07 though)
@@ -156,6 +159,13 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ## END locale customization
 
 ## START of https://hub.docker.com/_/openjdk/ (openjdk from alpine : https://github.com/docker-library/openjdk/blob/master/8/jdk/alpine/Dockerfile)
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
+#
+# PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+#FROM alpine:3.8
 
 # A few reasons for installing distribution-provided OpenJDK:
 #
@@ -182,8 +192,8 @@ RUN { \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ENV JAVA_VERSION 8u151
-ENV JAVA_ALPINE_VERSION 8.151.12-r0
+ENV JAVA_VERSION 8u171
+ENV JAVA_ALPINE_VERSION 8.171.11-r0
 
 RUN set -x \
 	&& apk add --no-cache \
@@ -227,13 +237,15 @@ RUN gem install danger && \
 
 ## END add JQ and danger
 
-## START of maven from alpine
+## START of maven from alpine (https://github.com/carlossg/docker-maven/blob/master/jdk-8-alpine/Dockerfile)
+
+#FROM openjdk:8-jdk-alpine
 
 RUN apk add --no-cache curl tar bash procps
 
-ARG MAVEN_VERSION=3.5.3
+ARG MAVEN_VERSION=3.5.4
 ARG USER_HOME_DIR="/root"
-ARG SHA=b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408
+ARG SHA=ce50b1c91364cb77efe3776f756a6d92b76d9038b0a0782f7d53acf1e997a14d
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
