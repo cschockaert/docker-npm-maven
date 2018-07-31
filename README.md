@@ -19,7 +19,7 @@ This project goal is to create a docker image with all build tool included:
 
 ## How to use
 
-latest docker image version is 1.2.0
+latest docker image version is 1.3.0
 
 ```
 docker run --rm -it cschockaert/docker-npm-maven:latest /bin/bash
