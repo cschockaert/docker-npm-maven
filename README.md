@@ -1,7 +1,8 @@
 # docker-npm-maven
 Provide a light docker image based with lot of build tools : npm, java, maven, git, docker, python, based on alpine
 
-https://hub.docker.com/r/cschockaert/docker-npm-maven/
+* https://hub.docker.com/r/cschockaert/docker-npm-maven/
+* https://github.com/cschockaert/docker-npm-maven
 
 ## Introduction
 
